@@ -23,6 +23,7 @@ tasks:
   - name : Netcat
     init: gp sync-await setup
     command: nc -l -p 9999
+    openMode: split-right
   - name: Spark Streaming
     init: gp sync-await setup
     command: spark-submit structured_network_wordcount.py 
