@@ -20,7 +20,7 @@ tasks:
   - name: Netcat
     init: >
     apt update && apt install -y netcat
-    command : nc -l -p 9999
+    command: nc -l -p 9999
   - name: Spark Streaming
     init: gp sync-await setup
     command: spark-submit structured_network_wordcount.py 
