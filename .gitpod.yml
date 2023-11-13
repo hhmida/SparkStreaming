@@ -17,13 +17,13 @@ github:
 #image: jupyter/pyspark-notebook
 # List the start up tasks. Learn more https://www.gitpod.io/docs/config-start-tasks/
 tasks:
-  - name : Netcat
+  - name: Netcat
     init: >
     apt update && apt install -y netcat
     command : nc -l -p 9999
   - name: Spark Streaming
     init: gp sync-await setup
-    #command: spark-submit structured_network_wordcount.py 
+    command: spark-submit structured_network_wordcount.py 
     openMode: split-right
   #- name: Setup and Status
   #  init: >
