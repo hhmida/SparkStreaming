@@ -21,7 +21,7 @@ tasks:
     init: sudo apt update && sudo apt install -y netcat && pip install pyspark && gp sync-done setup
     command: exit
   - name : Netcat
-    init: gp sync-await setup
+    init: gp sync-await setup && clear
     command: nc -l -p 9999
     openMode: split-right
   - name: Spark Streaming
