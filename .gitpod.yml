@@ -6,7 +6,7 @@ github:
 tasks:
   - name: Setup and Status
     init: >
-      docker pull &&
+      docker pull jupyter/pyspark-notebook &&
       docker run --name pyspark -it -d -p 8888:8888 -v notebooks:/home/jovyan jupyter/pyspark-notebook start.sh jupyter lab --NotebookApp.token='' &&
       setterm -linewrap off && 
       gp sync-done setup
