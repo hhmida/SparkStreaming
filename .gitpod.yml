@@ -18,7 +18,7 @@ github:
 # List the start up tasks. Learn more https://www.gitpod.io/docs/config-start-tasks/
 tasks:
   - name: Netcat
-    init: apt update && apt install -y netcat
+    init: sudo apt update && sudo apt install -y netcat && pip install pyspark && gp sync-done setup
     command: nc -l -p 9999
   - name: Spark Streaming
     init: gp sync-await setup
