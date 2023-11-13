@@ -41,3 +41,7 @@ tasks:
 # ports:
 #   - port: 8888
 #     onOpen: open-preview
+vscode:
+  extensions:
+    - ms-toolsai.jupyter
+    - ms-python.python
