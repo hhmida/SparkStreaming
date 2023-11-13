@@ -1,16 +1,38 @@
 github:
   prebuilds:
+    # enable for the master/default branch (defaults to true)
     main: true
-
+    # enable for all branches in this repo (defaults to false)
+    branches: true
+    # enable for pull requests coming from this repo (defaults to true)
+    pullRequests: false
+    # enable for pull requests coming from forks (defaults to false)
+    pullRequestsFromForks: false
+    # add a "Review in Gitpod" button as a comment to pull requests (defaults to true)
+    addComment: true
+    # add a "Review in Gitpod" button to pull requests (defaults to false)
+    addBadge: true
+    # add a label once the prebuild is ready to pull requests (defaults to false)
+    addLabel: prebuilt-in-gitpod
+#image: jupyter/pyspark-notebook
 # List the start up tasks. Learn more https://www.gitpod.io/docs/config-start-tasks/
 tasks:
-  - name: Setup and Status
+  - name : Netcat
     init: >
-      docker pull jupyter/pyspark-notebook &&
-      docker run --name pyspark -it -d -p 8888:8888 -v notebooks:/home/jovyan jupyter/pyspark-notebook start.sh jupyter lab --NotebookApp.token='' &&
-      setterm -linewrap off && 
-      gp sync-done setup
-    command: docker exec pyspark bash 
+    apt update && apt install -y netcat
+    command : nc -l -p 9999
+  - name: Spark Streaming
+    init: gp sync-await setup
+    #command: spark-submit structured_network_streaming.py 
+    openMode: split-right
+  #- name: Setup and Status
+  #  init: >
+  #    docker pull jupyter/pyspark-notebook &&
+  #    docker run --name pyspark -it -d -p 8888:8888 -v notebooks:/home/jovyan/work jupyter/pyspark-notebook start.sh jupyter lab --NotebookApp.token='' &&
+  #    docker exec -it -u root pyspark sh -c "apt update && apt install -y netcat"
+  #    setterm -linewrap off && 
+  #    gp sync-done setup
+  #  command: docker exec pyspark bash 
 
 
 # List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
