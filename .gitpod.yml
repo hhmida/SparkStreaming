@@ -23,7 +23,7 @@ tasks:
     command : nc -l -p 9999
   - name: Spark Streaming
     init: gp sync-await setup
-    #command: spark-submit structured_network_streaming.py 
+    #command: spark-submit structured_network_wordcount.py 
     openMode: split-right
   #- name: Setup and Status
   #  init: >
