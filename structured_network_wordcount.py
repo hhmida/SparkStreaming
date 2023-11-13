@@ -1,20 +1,35 @@
-import sys
-
-from pyspark import SparkContext
+from pyspark.sql import SparkSession
 from pyspark.streaming import StreamingContext
+from pyspark.sql.functions import explode
+from pyspark.sql.functions import split
 
-if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: network_wordcount.py <hostname> <port>", file=sys.stderr)
-        sys.exit(-1)
-    sc = SparkContext(appName="PythonStreamingNetworkWordCount")
-    ssc = StreamingContext(sc, 5)
+spark = SparkSession.builder.appName('Spark Structured Streaming').getOrCreate()
+# Create SPARK Context
+sc = spark.sparkContext
+sc.setLogLevel("WARN")
+## Create Streaming context , with 10 second interval 
+ssc = StreamingContext(sc,  10) 
+# Create DataFrame representing the stream of input lines from connection to localhost:9999
+lines = spark \
+    .readStream \
+    .format("socket") \
+    .option("host", "localhost") \
+    .option("port", 9999) \
+    .load()
 
-    lines = ssc.socketTextStream(sys.argv[1], int(sys.argv[2]))
-    counts = lines.flatMap(lambda line: line.split(" "))\
-                .map(lambda word: (word, 1))\
-                .reduceByKey(lambda a, b: a+b)
-    counts.pprint()
+# Split the lines into words
+words = lines.select(
+explode(
+    split(lines.value, " ")
+).alias("word")
+)
 
-    ssc.start()
-    ssc.awaitTermination()
+# Generate running word count
+wordCounts = words.groupBy("word").count()
+# Start running the query that prints the running counts to the console
+query = wordCounts \
+    .writeStream \
+    .outputMode("complete") \
+    .format("console") \
+    .start()
+query.awaitTermination()
