@@ -7,8 +7,7 @@ spark = SparkSession.builder.appName('Spark Structured Streaming').getOrCreate()
 # Create SPARK Context
 sc = spark.sparkContext
 sc.setLogLevel("WARN")
-## Create Streaming context , with 10 second interval 
-ssc = StreamingContext(sc,  10) 
+
 # Create DataFrame representing the stream of input lines from connection to localhost:9999
 lines = spark \
     .readStream \
